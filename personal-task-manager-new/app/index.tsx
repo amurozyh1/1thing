@@ -1,0 +1,141 @@
+import { useState } from "react";
+import { View, Text, FlatList, Button, StyleSheet } from "react-native";
+import { Task } from "../types";
+import { initialTasks } from "../constants/initialTasks";
+import TaskItem from "../components/TaskItem";
+import AddTaskModal from "../components/AddTaskModal";
+import ViewTaskModal from "../components/ViewTaskModal";
+import EditTaskModal from "../components/EditTaskModal";
+
+export default function Home() {
+  const [tasks, setTasks] = useState<Task[]>(initialTasks);
+  const [currentTask, setCurrentTask] = useState<Task | null>(null);
+  const [isAddModalVisible, setAddModalVisible] = useState(false);
+  const [isViewModalVisible, setViewModalVisible] = useState(false);
+  const [isEditModalVisible, setEditModalVisible] = useState(false);
+  const [newTitle, setNewTitle] = useState("");
+  const [newDescription, setNewDescription] = useState("");
+
+  const handleAddTask = () => {
+    if (!newTitle.trim()) return;
+    const newTask: Task = {
+      id: Date.now().toString(),
+      title: newTitle,
+      description: newDescription,
+      status: "pending",
+    };
+    setTasks((prev) => [newTask, ...prev]);
+    setNewTitle("");
+    setNewDescription("");
+    setAddModalVisible(false);
+  };
+
+  const handleViewTask = (task: Task) => {
+    setCurrentTask(task);
+    setViewModalVisible(true);
+  };
+
+  const handleDeleteTask = () => {
+    if (!currentTask) return;
+    setTasks((prev) => prev.filter((t) => t.id !== currentTask.id));
+    setViewModalVisible(false);
+  };
+
+  const startEditing = () => {
+    if (!currentTask) return;
+    setNewTitle(currentTask.title);
+    setNewDescription(currentTask.description);
+    setViewModalVisible(false);
+    setEditModalVisible(true);
+  };
+
+  const handleEditTask = () => {
+    if (!currentTask) return;
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === currentTask.id
+          ? { ...task, title: newTitle, description: newDescription }
+          : task
+      )
+    );
+    setEditModalVisible(false);
+  };
+
+  const toggleTaskStatus = (id: string) => {
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === id
+          ? {
+              ...task,
+              status: task.status === "pending" ? "completed" : "pending",
+            }
+          : task
+      )
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>My Tasks</Text>
+        <Button title="Add Task" onPress={() => setAddModalVisible(true)} />
+      </View>
+
+      {tasks.length ? (
+        <FlatList
+          data={tasks}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <TaskItem
+              task={item}
+              onPress={handleViewTask}
+              onToggleStatus={toggleTaskStatus}
+            />
+          )}
+        />
+      ) : (
+        <Text style={styles.emptyText}>No tasks yet.</Text>
+      )}
+
+      <AddTaskModal
+        visible={isAddModalVisible}
+        title={newTitle}
+        description={newDescription}
+        onChangeTitle={setNewTitle}
+        onChangeDescription={setNewDescription}
+        onAdd={handleAddTask}
+        onCancel={() => setAddModalVisible(false)}
+      />
+
+      <ViewTaskModal
+        visible={isViewModalVisible}
+        task={currentTask}
+        onDelete={handleDeleteTask}
+        onEdit={startEditing}
+        onClose={() => setViewModalVisible(false)}
+      />
+
+      <EditTaskModal
+        visible={isEditModalVisible}
+        title={newTitle}
+        description={newDescription}
+        onChangeTitle={setNewTitle}
+        onChangeDescription={setNewDescription}
+        onSave={handleEditTask}
+        onCancel={() => setEditModalVisible(false)}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 16, backgroundColor: "#fff" },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 50,
+  },
+  headerTitle: { fontSize: 24, fontWeight: "bold" },
+  emptyText: { textAlign: "center", marginTop: 50, color: "#666" },
+});
