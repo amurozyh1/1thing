@@ -8,14 +8,20 @@ import ViewTaskModal from "../components/ViewTaskModal";
 import EditTaskModal from "../components/EditTaskModal";
 
 export default function Home() {
+  // Task state
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
   const [currentTask, setCurrentTask] = useState<Task | null>(null);
+
+  // Modal states
   const [isAddModalVisible, setAddModalVisible] = useState(false);
   const [isViewModalVisible, setViewModalVisible] = useState(false);
   const [isEditModalVisible, setEditModalVisible] = useState(false);
+
+  // Form input states
   const [newTitle, setNewTitle] = useState("");
   const [newDescription, setNewDescription] = useState("");
 
+  // Add new task
   const handleAddTask = () => {
     if (!newTitle.trim()) return;
     const newTask: Task = {
@@ -30,17 +36,20 @@ export default function Home() {
     setAddModalVisible(false);
   };
 
+  // Open view modal
   const handleViewTask = (task: Task) => {
     setCurrentTask(task);
     setViewModalVisible(true);
   };
 
+  // Delete task
   const handleDeleteTask = () => {
     if (!currentTask) return;
     setTasks((prev) => prev.filter((t) => t.id !== currentTask.id));
     setViewModalVisible(false);
   };
 
+  // Switch to edit mode
   const startEditing = () => {
     if (!currentTask) return;
     setNewTitle(currentTask.title);
@@ -49,6 +58,7 @@ export default function Home() {
     setEditModalVisible(true);
   };
 
+  // Save edits
   const handleEditTask = () => {
     if (!currentTask) return;
     setTasks((prev) =>
@@ -61,6 +71,7 @@ export default function Home() {
     setEditModalVisible(false);
   };
 
+  // Toggle pending/completed
   const toggleTaskStatus = (id: string) => {
     setTasks((prev) =>
       prev.map((task) =>

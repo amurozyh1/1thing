@@ -2,12 +2,14 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Task } from "../types";
 
+// Props for individual task item
 interface TaskItemProps {
   task: Task;
   onPress: (task: Task) => void;
   onToggleStatus: (id: string) => void;
 }
 
+// Component to render each task in the list
 export default function TaskItem({
   task,
   onPress,
@@ -22,6 +24,7 @@ export default function TaskItem({
       onPress={() => onPress(task)}
     >
       <View style={styles.taskContent}>
+        {/* Task title */}
         <Text
           style={[
             styles.title,
@@ -30,8 +33,10 @@ export default function TaskItem({
         >
           {task.title}
         </Text>
+        {/* Task status */}
         <Text style={styles.status}>Status: {task.status}</Text>
       </View>
+      {/* Status toggle button */}
       <TouchableOpacity
         style={styles.statusButton}
         onPress={() => onToggleStatus(task.id)}
@@ -42,6 +47,7 @@ export default function TaskItem({
   );
 }
 
+// Styles for task item layout
 const styles = StyleSheet.create({
   taskItem: {
     flexDirection: "row",

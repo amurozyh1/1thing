@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal, View, Text, TextInput, Button, StyleSheet } from "react-native";
 
+// Props for EditTaskModal component
 interface EditTaskModalProps {
   visible: boolean;
   title: string;
@@ -11,6 +12,7 @@ interface EditTaskModalProps {
   onCancel: () => void;
 }
 
+// Modal component for editing an existing task
 export default function EditTaskModal({
   visible,
   title,
@@ -25,12 +27,14 @@ export default function EditTaskModal({
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>Edit Task</Text>
+          {/* Title input field */}
           <TextInput
             style={styles.input}
             placeholder="Task Title"
             value={title}
             onChangeText={onChangeTitle}
           />
+          {/* Description input field */}
           <TextInput
             style={[styles.input, styles.textArea]}
             placeholder="Description"
@@ -38,6 +42,7 @@ export default function EditTaskModal({
             onChangeText={onChangeDescription}
             multiline
           />
+          {/* Cancel and Save buttons */}
           <View style={styles.modalButtons}>
             <Button title="Cancel" onPress={onCancel} />
             <Button title="Save" onPress={onSave} />
@@ -48,6 +53,7 @@ export default function EditTaskModal({
   );
 }
 
+// Styles for modal layout
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,

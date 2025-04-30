@@ -2,6 +2,7 @@ import React from "react";
 import { Modal, View, Text, Button, StyleSheet } from "react-native";
 import { Task } from "../types";
 
+// Props for ViewTaskModal component
 interface ViewTaskModalProps {
   visible: boolean;
   task: Task | null;
@@ -10,6 +11,7 @@ interface ViewTaskModalProps {
   onClose: () => void;
 }
 
+// Modal component to view task details
 export default function ViewTaskModal({
   visible,
   task,
@@ -17,15 +19,20 @@ export default function ViewTaskModal({
   onEdit,
   onClose,
 }: ViewTaskModalProps) {
+  // If no task is selected, don't render the modal
   if (!task) return null;
 
   return (
     <Modal visible={visible} animationType="slide" transparent>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
+          {/* Task title */}
           <Text style={styles.modalTitle}>{task.title}</Text>
+          {/* Task description */}
           <Text style={styles.description}>{task.description}</Text>
+          {/* Task status */}
           <Text style={styles.statusDetail}>Status: {task.status}</Text>
+          {/* Action buttons */}
           <View style={styles.modalButtons}>
             <Button title="Delete" onPress={onDelete} color="red" />
             <Button title="Edit" onPress={onEdit} />
@@ -37,6 +44,7 @@ export default function ViewTaskModal({
   );
 }
 
+// Styles for modal layout
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
