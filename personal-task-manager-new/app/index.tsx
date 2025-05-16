@@ -90,6 +90,12 @@ export default function Home() {
     );
   };
 
+  // Filter tasks based on search text (case-insensitive title match)
+  const filteredTasks = tasks.filter((task) =>
+    task.title.toLowerCase().includes(searchText.toLowerCase())
+  );
+
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -104,9 +110,9 @@ export default function Home() {
         style={styles.searchInput}
       />
 
-      {tasks.length ? (
+      {(searchText ? filteredTasks : tasks).length ? (
         <FlatList
-          data={tasks}
+          data={searchText ? filteredTasks : tasks}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <TaskItem
@@ -117,8 +123,9 @@ export default function Home() {
           )}
         />
       ) : (
-        <Text style={styles.emptyText}>No tasks yet.</Text>
+        <Text style={styles.emptyText}>No tasks found.</Text>
       )}
+
 
       <AddTaskModal
         visible={isAddModalVisible}
