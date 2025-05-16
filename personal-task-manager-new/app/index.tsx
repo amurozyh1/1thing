@@ -6,6 +6,8 @@ import TaskItem from "../components/TaskItem";
 import AddTaskModal from "../components/AddTaskModal";
 import ViewTaskModal from "../components/ViewTaskModal";
 import EditTaskModal from "../components/EditTaskModal";
+import { TextInput } from "react-native";
+
 
 export default function Home() {
   // Task state
@@ -95,6 +97,13 @@ export default function Home() {
         <Button title="Add Task" onPress={() => setAddModalVisible(true)} />
       </View>
 
+      <TextInput
+        placeholder="Search tasks..."
+        value={searchText}
+        onChangeText={setSearchText}
+        style={styles.searchInput}
+      />
+
       {tasks.length ? (
         <FlatList
           data={tasks}
@@ -152,4 +161,14 @@ const styles = StyleSheet.create({
   },
   headerTitle: { fontSize: 24, fontWeight: "bold" },
   emptyText: { textAlign: "center", marginTop: 50, color: "#666" },
+
+  //Style for search bar
+  searchInput: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    padding: 10,
+    marginVertical: 10,
+  },
+  
 });
