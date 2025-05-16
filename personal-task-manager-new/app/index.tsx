@@ -21,6 +21,9 @@ export default function Home() {
   const [newTitle, setNewTitle] = useState("");
   const [newDescription, setNewDescription] = useState("");
 
+  // Record search text
+  const [searchText, setSearchText] = useState("");
+
   // Add new task
   const handleAddTask = () => {
     if (!newTitle.trim()) return;
