@@ -91,9 +91,9 @@ export default function Home() {
   };
 
   // Filter tasks based on search text (case-insensitive title match)
-  const filteredTasks = tasks.filter((task) =>
+  /*const filteredTasks = tasks.filter((task) =>
     task.title.toLowerCase().includes(searchText.toLowerCase())
-  );
+  );*/
 
 
   return (
@@ -112,6 +112,7 @@ export default function Home() {
 
       {(searchText ? filteredTasks : tasks).length ? (
         <FlatList
+          // Show filtered tasks if there's search text, otherwise show all
           data={searchText ? filteredTasks : tasks}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
@@ -170,12 +171,12 @@ const styles = StyleSheet.create({
   emptyText: { textAlign: "center", marginTop: 50, color: "#666" },
 
   //Style for search bar
-  searchInput: {
+  /*searchInput: {
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 8,
     padding: 10,
     marginVertical: 10,
-  },
+  },*/
   
 });
